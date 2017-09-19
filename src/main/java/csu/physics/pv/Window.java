@@ -85,7 +85,7 @@ public class Window extends JPanel {
         frame.setSize(new Dimension(500, 350));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
+        frame.requestFocusInWindow();
     }
 
     /*
@@ -111,11 +111,13 @@ public class Window extends JPanel {
         physButton.setBorder(new EmptyBorder(10,10,5,10));
         physButton.addActionListener(new SelectFormatListener());
         physButton.setActionCommand("physics");
+        physButton.setFocusPainted(false);
         physButton.setSelected(true);
 
         JRadioButton engrButton = new JRadioButton("ERC");
         engrButton.setBorder(new EmptyBorder(0,10,0,10));
         engrButton.setActionCommand("engr");
+        engrButton.setFocusPainted(false);
         engrButton.addActionListener(new SelectFormatListener());
 
         // group buttons
@@ -187,15 +189,18 @@ public class Window extends JPanel {
         // create buttons
         selectButton = new JButton("Select Files");
         selectButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        selectButton.setFocusPainted(false);
         selectButton.addActionListener(new SelectFilesListener());
 
         clearButton = new JButton("Clear Files");
         clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        clearButton.setFocusPainted(false);
         clearButton.addActionListener(new ClearFilesListener());
 
         // add to panel
         filesPanel.add(Box.createVerticalGlue());
         filesPanel.add(selectButton);
+        filesPanel.add(Box.createVerticalGlue());
         filesPanel.add(clearButton);
         filesPanel.add(Box.createVerticalGlue());
         leftPanel.add(filesPanel);
@@ -272,6 +277,7 @@ public class Window extends JPanel {
         goButton.addActionListener(new GoListener());
         //goButton.setMaximumSize(new Dimension(80,50));
         goButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        goButton.setFocusPainted(false);
         // add to panel
         goPanel.add(Box.createVerticalGlue());
         goPanel.add(goButton);
