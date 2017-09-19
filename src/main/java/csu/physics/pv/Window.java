@@ -68,6 +68,19 @@ public class Window extends JPanel {
         createDirField();
         createScroller();
 
+        // set UI theme
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
         // Set window size and center in the screen
         frame.setSize(new Dimension(500, 350));
         frame.setLocationRelativeTo(null);
