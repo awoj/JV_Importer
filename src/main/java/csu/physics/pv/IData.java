@@ -1,5 +1,6 @@
 package csu.physics.pv;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /*
@@ -15,11 +16,11 @@ interface IData {
 
     void extractData();
 
-    ArrayList<ArrayList<Double>> getCurves();
+    ArrayList<ArrayList<BigDecimal>> getCurves();
 
-    ArrayList<ArrayList<Double>> sortParams(ArrayList<String> p);
+    ArrayList<ArrayList<BigDecimal>> sortParams(ArrayList<String> p);
 
-    ArrayList<ArrayList<Double>> sortCurves(ArrayList<String> c);
+    ArrayList<ArrayList<BigDecimal>> sortCurves(ArrayList<String> c);
 
     ArrayList<String> makeParamsTable();
 

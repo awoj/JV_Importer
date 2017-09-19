@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 class JVWriter {
@@ -35,13 +36,13 @@ class JVWriter {
 
         // figure out which file has most J-V points (ie. max num of lines to print)
         int biggest = 0;
-        for (ArrayList<Double> file : data.getCurves()) {
+        for (ArrayList<BigDecimal> file : data.getCurves()) {
             if (file.size() >= biggest)
                 biggest = file.size();
         }
 
         // write the curve columns
-        ArrayList<Double> currData;
+        ArrayList<BigDecimal> currData;
         String voltage, current;
         for (int i = 0; i < biggest/2; i++) { // line number
 

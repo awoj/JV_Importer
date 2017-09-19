@@ -1,5 +1,6 @@
 package csu.physics.pv;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static java.util.Arrays.copyOfRange;
@@ -80,10 +81,10 @@ public class PhysicsData extends JVData {
     }
 
     @Override
-    public ArrayList<ArrayList<Double>> sortParams(ArrayList<String> p) {
+    public ArrayList<ArrayList<BigDecimal>> sortParams(ArrayList<String> p) {
 
-        ArrayList<Double> currFile;
-        ArrayList<ArrayList<Double>> sorted = new ArrayList<>();
+        ArrayList<BigDecimal> currFile;
+        ArrayList<ArrayList<BigDecimal>> sorted = new ArrayList<>();
 
         String Jsc_m, Voc_m, FF, eff, Jsc_f, Voc_f, area;
         String [] lines;
@@ -97,31 +98,31 @@ public class PhysicsData extends JVData {
 
             // area
             area = (lines[2]).substring(lines[2].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(area));
+            currFile.add(new BigDecimal(area));
 
             // measured Jsc
             Jsc_m = (lines[8]).substring(lines[8].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Jsc_m));
+            currFile.add(new BigDecimal(Jsc_m));
 
             // measured Voc
             Voc_m = (lines[9]).substring(lines[9].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Voc_m));
+            currFile.add(new BigDecimal(Voc_m));
 
             // fill factor
             FF = (lines[6]).substring(lines[6].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(FF));
+            currFile.add(new BigDecimal(FF));
 
             // efficiency
             eff = (lines[7]).substring(lines[7].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(eff));
+            currFile.add(new BigDecimal(eff));
 
             // fit Jsc
             Jsc_f = (lines[4]).substring(lines[4].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Jsc_f));
+            currFile.add(new BigDecimal(Jsc_f));
 
             // fit Voc
             Voc_f = (lines[5]).substring(lines[5].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Voc_f));
+            currFile.add(new BigDecimal(Voc_f));
 
             // add to final list
             sorted.add(currFile);
@@ -131,10 +132,10 @@ public class PhysicsData extends JVData {
     }
 
     @Override
-    public ArrayList<ArrayList<Double>> sortCurves(ArrayList<String> c) {
+    public ArrayList<ArrayList<BigDecimal>> sortCurves(ArrayList<String> c) {
 
-        ArrayList<Double> currFile;
-        ArrayList<ArrayList<Double>> sorted = new ArrayList<>();
+        ArrayList<BigDecimal> currFile;
+        ArrayList<ArrayList<BigDecimal>> sorted = new ArrayList<>();
 
         String [] lines;
         String voltage, current;
@@ -148,12 +149,12 @@ public class PhysicsData extends JVData {
             for (String line : lines) {
 
                 // get voltage from line
-                voltage = (line).substring(0, line.lastIndexOf('\t') - 1);
-                currFile.add(Double.parseDouble(voltage));
+                voltage = (line).substring(0, line.lastIndexOf('\t'));
+                currFile.add(new BigDecimal(voltage));
 
                 // get current from line
-                current = (line).substring(line.lastIndexOf('\t') + 1);
-                currFile.add(Double.parseDouble(current));
+                current = (line).substring(line.lastIndexOf('\t')+1);
+                currFile.add(new BigDecimal(current));
 
             }
 
@@ -180,7 +181,7 @@ public class PhysicsData extends JVData {
                             + "Voc_fit [V]");
 
         // write the table lines
-        ArrayList<Double> p;
+        ArrayList<BigDecimal> p;
         StringBuilder sb;
         for (int i = 0; i < params.size(); i++) { // file number
 
@@ -194,7 +195,7 @@ public class PhysicsData extends JVData {
             sb.append(name).append('\t');
 
             // build a line of the parameters,
-            for (Double aP : p)
+            for (BigDecimal aP : p)
                 sb.append(aP.toString()).append('\t');
 
             // add to the final table

@@ -1,5 +1,6 @@
 package csu.physics.pv;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /*
@@ -10,8 +11,8 @@ public class JVData implements IData {
     ArrayList<String> fileData;         // input file data, each string is the contents of one file
     String [] fileNames;
     ArrayList<String> lightFileNames;   // file names of light data only, used for printing params table
-    ArrayList<ArrayList<Double>> params;
-    ArrayList<ArrayList<Double>> curves;
+    ArrayList<ArrayList<BigDecimal>> params;
+    ArrayList<ArrayList<BigDecimal>> curves;
 
 
     JVData() {
@@ -35,17 +36,17 @@ public class JVData implements IData {
         return fileData.size();
     }
 
-    public ArrayList<ArrayList<Double>> getCurves() {
+    public ArrayList<ArrayList<BigDecimal>> getCurves() {
         return curves;
     }
 
     public void extractData() { }
 
-    public ArrayList<ArrayList<Double>> sortParams(ArrayList<String> p) {
+    public ArrayList<ArrayList<BigDecimal>> sortParams(ArrayList<String> p) {
         return null;
     }
 
-    public ArrayList<ArrayList<Double>> sortCurves(ArrayList<String> c) {
+    public ArrayList<ArrayList<BigDecimal>> sortCurves(ArrayList<String> c) {
         return null;
     }
 

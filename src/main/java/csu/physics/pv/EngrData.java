@@ -1,5 +1,6 @@
 package csu.physics.pv;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static java.util.Arrays.copyOfRange;
@@ -88,10 +89,10 @@ public class EngrData extends JVData {
     }
 
     @Override
-    public ArrayList<ArrayList<Double>> sortParams(ArrayList<String> p) {
+    public ArrayList<ArrayList<BigDecimal>> sortParams(ArrayList<String> p) {
 
-        ArrayList<Double> currFile;
-        ArrayList<ArrayList<Double>> sorted = new ArrayList<>();
+        ArrayList<BigDecimal> currFile;
+        ArrayList<ArrayList<BigDecimal>> sorted = new ArrayList<>();
 
         String Jsc, Voc, FF, eff, Jmp, Vmp, area;
         String [] lines;
@@ -105,31 +106,31 @@ public class EngrData extends JVData {
 
             // area
             area = (lines[8]).substring(lines[8].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(area));
+            currFile.add(new BigDecimal(area));
 
             // Jsc
             Jsc = (lines[6]).substring(lines[6].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Jsc));
+            currFile.add(new BigDecimal(Jsc));
 
             // Voc
             Voc = (lines[4]).substring(lines[4].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Voc));
+            currFile.add(new BigDecimal(Voc));
 
             // fill factor
             FF = (lines[5]).substring(lines[5].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(FF));
+            currFile.add(new BigDecimal(FF));
 
             // efficiency
             eff = (lines[7]).substring(lines[7].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(eff));
+            currFile.add(new BigDecimal(eff));
 
             // Jmp
             Jmp = (lines[11]).substring(lines[11].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Jmp));
+            currFile.add(new BigDecimal(Jmp));
 
             // Vmp
             Vmp = (lines[10]).substring(lines[10].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Vmp));
+            currFile.add(new BigDecimal(Vmp));
 
             // add to final list
             sorted.add(currFile);
@@ -139,10 +140,10 @@ public class EngrData extends JVData {
     }
 
     @Override
-    public ArrayList<ArrayList<Double>> sortCurves(ArrayList<String> c) {
+    public ArrayList<ArrayList<BigDecimal>> sortCurves(ArrayList<String> c) {
 
-        ArrayList<Double> currFile;
-        ArrayList<ArrayList<Double>> sorted = new ArrayList<>();
+        ArrayList<BigDecimal> currFile;
+        ArrayList<ArrayList<BigDecimal>> sorted = new ArrayList<>();
 
         String [] lines;
         String voltage, current;
@@ -156,12 +157,12 @@ public class EngrData extends JVData {
             for (String line : lines) {
 
                 // get voltage from line
-                voltage = (line).substring(0, line.lastIndexOf('\t') - 1);
-                currFile.add(Double.parseDouble(voltage));
+                voltage = line.substring(0, line.lastIndexOf('\t'));
+                currFile.add(new BigDecimal(voltage));
 
                 // get current from line
-                current = (line).substring(line.lastIndexOf('\t') + 1);
-                currFile.add(Double.parseDouble(current) * Math.pow(10, 3));    // convert to mA/cm^2
+                current = (line).substring(line.lastIndexOf('\t'));
+                currFile.add(new BigDecimal(current).multiply(new BigDecimal(1000)));    // convert to mA/cm^2
 
             }
 
@@ -188,7 +189,7 @@ public class EngrData extends JVData {
                             + "Vmp [mV]");
 
         // write the table lines
-        ArrayList<Double> p;
+        ArrayList<BigDecimal> p;
         StringBuilder sb;
         for (int i = 0; i < params.size(); i++) { // file number
 
@@ -202,7 +203,7 @@ public class EngrData extends JVData {
             sb.append(name).append('\t');
 
             // build a line of the parameters,
-            for (Double aP : p)
+            for (BigDecimal aP : p)
                 sb.append(aP.toString()).append('\t');
 
             // add to the final table
