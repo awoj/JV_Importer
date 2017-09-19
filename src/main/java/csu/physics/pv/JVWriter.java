@@ -7,13 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class JVWriter {
+class JVWriter {
 
     private JVData data;
-
-    JVWriter() {
-        data = new JVData();
-    }
 
     JVWriter(JVData input) {
         data = input;
@@ -23,17 +19,17 @@ public class JVWriter {
     Writes sorted data to file by prompting for save location. Returns a boolean to indicate if it wrote successfully.
      */
 
-    public boolean write() {
+    boolean write() {
 
 
         boolean writeSuccess = false;
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
 
         // Write the file names first
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < data.getNumFiles(); i++) {
-            sb.append((data.getFileNames())[i].substring(0,data.getFileNames()[i].lastIndexOf(".txt")) + "_X" + '\t');
-            sb.append((data.getFileNames())[i].substring(0,data.getFileNames()[i].lastIndexOf(".txt")) + "_Y" + '\t');
+            sb.append((data.getFileNames())[i].substring(0, data.getFileNames()[i].lastIndexOf(".txt"))).append("_X").append('\t');
+            sb.append((data.getFileNames())[i].substring(0, data.getFileNames()[i].lastIndexOf(".txt"))).append("_Y").append('\t');
         }
         lines.add(sb.toString());
 
@@ -58,7 +54,7 @@ public class JVWriter {
                 // write the voltage and current, tab separated
                 voltage = i < currData.size()/2 ? currData.get(2*i).toString() : "";
                 current = i < currData.size()/2 ? currData.get(2*i+1).toString() : "";
-                sb.append(voltage + '\t' + current + '\t');
+                sb.append(voltage).append('\t').append(current).append('\t');
 
             }
 
@@ -69,13 +65,12 @@ public class JVWriter {
 
         // write the params table
         ArrayList<String> paramsTable = data.makeParamsTable();
-        for (String line : paramsTable)
-            lines.add(line);
+        lines.addAll(paramsTable);
 
         // write everything out to a string
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (String line : lines)
-                output += (line + '\n');
+            output.append(line).append('\n');
 
         // prompt for save location
         JFileChooser fileChooser = new JFileChooser();
@@ -86,7 +81,7 @@ public class JVWriter {
             // try writing data out
             try {
                 BufferedWriter out = new BufferedWriter(new FileWriter(fileWithExt));
-                out.write(output);
+                out.write(output.toString());
                 out.close();
                 writeSuccess = true;
             } catch (IOException e) {

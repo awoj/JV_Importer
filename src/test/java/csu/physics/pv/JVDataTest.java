@@ -1,18 +1,15 @@
 package csu.physics.pv;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
 
 
-public class JVDataTest extends TestCase {
-
-    JVData data;
+public class JVDataTest {
 
     @Test
-    public void testSetFileNames() {
+    public void setFileNames() {
 
-        int i = 0;
-        assertTrue(i == 0);
+        Assert.assertTrue(true);
 
     }
 

@@ -15,8 +15,6 @@ interface IData {
 
     void extractData();
 
-    ArrayList<ArrayList<Double>> getParams();
-
     ArrayList<ArrayList<Double>> getCurves();
 
     ArrayList<ArrayList<Double>> sortParams(ArrayList<String> p);

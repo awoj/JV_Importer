@@ -15,11 +15,11 @@ public class JVData implements IData {
 
 
     JVData() {
-        fileData = new ArrayList<String>();
+        fileData = new ArrayList<>();
         fileNames = new String[0];
-        lightFileNames = new ArrayList<String>();
-        params = new ArrayList<ArrayList<Double>>();
-        curves = new ArrayList<ArrayList<Double>>();
+        lightFileNames = new ArrayList<>();
+        params = new ArrayList<>();
+        curves = new ArrayList<>();
     }
 
 
@@ -33,10 +33,6 @@ public class JVData implements IData {
 
     public int getNumFiles() {
         return fileData.size();
-    }
-
-    public ArrayList<ArrayList<Double>> getParams() {
-        return params;
     }
 
     public ArrayList<ArrayList<Double>> getCurves() {

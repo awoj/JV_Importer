@@ -16,12 +16,9 @@ public class Window extends JPanel {
 
     // UI elements
     private JPanel leftPanel, rightPanel;
-    private JButton selectButton, clearButton, goButton;
     private JScrollPane listScroller;
     private JTextField dirField;
 
-    // File IO
-    private JList fileList;
     private String [] fileNames;
     private File [] filePaths;
     private JVReader reader;
@@ -31,7 +28,7 @@ public class Window extends JPanel {
     private String dataFormat = "physics";
 
 
-    public Window() {
+    private Window() {
 
         // Initialize the window and set layout
         frame = new JFrame("J-V Data Importer");
@@ -71,13 +68,7 @@ public class Window extends JPanel {
         // set UI theme
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -104,7 +95,7 @@ public class Window extends JPanel {
                     dataFormat = "engr";
                 }
             }
-        };
+        }
 
         // create the buttons
         JRadioButton physButton = new JRadioButton("Physics");
@@ -164,7 +155,7 @@ public class Window extends JPanel {
                     updateScroller();
                 }
             }
-        };
+        }
 
         class ClearFilesListener implements ActionListener {
 
@@ -176,7 +167,7 @@ public class Window extends JPanel {
                 updateDirField();
 
             }
-        };
+        }
 
         // make a sub-panel
         JPanel filesPanel = new JPanel();
@@ -187,12 +178,12 @@ public class Window extends JPanel {
         filesPanel.setBorder(title);
 
         // create buttons
-        selectButton = new JButton("Select Files");
+        JButton selectButton = new JButton("Select Files");
         selectButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         selectButton.setFocusPainted(false);
         selectButton.addActionListener(new SelectFilesListener());
 
-        clearButton = new JButton("Clear Files");
+        JButton clearButton = new JButton("Clear Files");
         clearButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         clearButton.setFocusPainted(false);
         clearButton.addActionListener(new ClearFilesListener());
@@ -235,7 +226,7 @@ public class Window extends JPanel {
                 if (dataFormat.equals("physics")) {
                     data = new PhysicsData(reader.getFileData());
                 } else if (dataFormat.equals("engr")) {
-                    //data = new EngrData(reader.getFileData());
+                    data = new EngrData(reader.getFileData());
                 }
 
                 if (data == null)
@@ -265,7 +256,7 @@ public class Window extends JPanel {
                 }
 
             }
-        };
+        }
 
         // make a sub-panel
         JPanel goPanel = new JPanel();
@@ -273,9 +264,9 @@ public class Window extends JPanel {
         goPanel.setBorder(new EmptyBorder(10,10,10,10));
 
         // Create button
-        goButton = new JButton("Go!");
+        JButton goButton = new JButton("Go!");
         goButton.addActionListener(new GoListener());
-        //goButton.setMaximumSize(new Dimension(80,50));
+        goButton.setPreferredSize(new Dimension(80,50));
         goButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         goButton.setFocusPainted(false);
         // add to panel
@@ -309,7 +300,7 @@ public class Window extends JPanel {
     private void createScroller() {
 
         // Add the scroller to files panel
-        fileList = new JList();
+        JList fileList = new JList();
         fileList.setLayoutOrientation(JList.VERTICAL);
         listScroller = new JScrollPane(fileList,
                                         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,

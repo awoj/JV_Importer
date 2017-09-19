@@ -9,19 +9,19 @@ import static java.util.Arrays.copyOfRange;
 Outer list: each element corresponds to a file
 Inner list: each element corresponds to a parameter, defined by the order:
 
-    [0] - cell area
-    [1] - Jsc measured
-    [2] - Voc measured
-    [3] - FF
-    [4] - eff
-    [5] - Jsc fit
-    [6] - Voc fit
+    [0] - cell area (cm^2)
+    [1] - Jsc (mA/cm^2)
+    [2] - Voc (mV)
+    [3] - FF (%)
+    [4] - Efficiency (%)
+    [5] - Jmp (mA/cm^2)
+    [6] - Vmp (mV)
 */
 
 
-public class PhysicsData extends JVData {
+public class EngrData extends JVData {
 
-    PhysicsData(ArrayList<String> data) {
+    EngrData(ArrayList<String> data) {
         fileData = data;
     }
 
@@ -40,31 +40,21 @@ public class PhysicsData extends JVData {
             lines = str.split("\n");
 
             String[] par, cur;
-            int index;
-            boolean illumination;
-
-            // Check for light or dark data and set the line number where curve data begin
-            if (fileNames[i].contains("jvl")) {
-                index = 12;
-                illumination = true;
-            } else {
-                index = 6;
-                illumination = false;
-            }
+            int index = getIndex(lines);
 
             // Copy the sub-array of parameter and curve data
             par = copyOfRange(lines, 0, index);
-            cur = copyOfRange(lines, index, lines.length);
+            cur = copyOfRange(lines, index+1, lines.length);
 
             // Build light parameter data back into a string
             StringBuilder sb;
-            if (illumination) {
-                sb = new StringBuilder();
-                for (String aPar : par)
-                    sb.append(aPar).append('\n');
-                extractedParams.add(sb.toString());
-                lightFileNames.add(fileNames[i]);
-            }
+
+            sb = new StringBuilder();
+            for (String aPar : par)
+                sb.append(aPar).append('\n');
+            extractedParams.add(sb.toString());
+            lightFileNames.add(fileNames[i]);
+
 
             // Build curves data back into a string
             sb = new StringBuilder();
@@ -79,13 +69,31 @@ public class PhysicsData extends JVData {
 
     }
 
+    private int getIndex(String[] lines) {
+
+        String currLine;
+        int index = 0;
+
+        for (int i = 0; i < lines.length; i++) {
+
+            currLine = lines[i];
+            if (currLine.contains("V(V)\tJ(A/cm^2)")) {
+                index = i;
+            }
+
+        }
+
+
+        return index;
+    }
+
     @Override
     public ArrayList<ArrayList<Double>> sortParams(ArrayList<String> p) {
 
         ArrayList<Double> currFile;
         ArrayList<ArrayList<Double>> sorted = new ArrayList<>();
 
-        String Jsc_m, Voc_m, FF, eff, Jsc_f, Voc_f, area;
+        String Jsc, Voc, FF, eff, Jmp, Vmp, area;
         String [] lines;
 
         for (String aP : p) {
@@ -96,32 +104,32 @@ public class PhysicsData extends JVData {
             lines = aP.split("\n");
 
             // area
-            area = (lines[2]).substring(lines[2].lastIndexOf('\t') + 1);
+            area = (lines[8]).substring(lines[8].lastIndexOf('\t') + 1);
             currFile.add(Double.parseDouble(area));
 
-            // measured Jsc
-            Jsc_m = (lines[8]).substring(lines[8].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Jsc_m));
+            // Jsc
+            Jsc = (lines[6]).substring(lines[6].lastIndexOf('\t') + 1);
+            currFile.add(Double.parseDouble(Jsc));
 
-            // measured Voc
-            Voc_m = (lines[9]).substring(lines[9].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Voc_m));
+            // Voc
+            Voc = (lines[4]).substring(lines[4].lastIndexOf('\t') + 1);
+            currFile.add(Double.parseDouble(Voc));
 
             // fill factor
-            FF = (lines[6]).substring(lines[6].lastIndexOf('\t') + 1);
+            FF = (lines[5]).substring(lines[5].lastIndexOf('\t') + 1);
             currFile.add(Double.parseDouble(FF));
 
             // efficiency
             eff = (lines[7]).substring(lines[7].lastIndexOf('\t') + 1);
             currFile.add(Double.parseDouble(eff));
 
-            // fit Jsc
-            Jsc_f = (lines[4]).substring(lines[4].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Jsc_f));
+            // Jmp
+            Jmp = (lines[11]).substring(lines[11].lastIndexOf('\t') + 1);
+            currFile.add(Double.parseDouble(Jmp));
 
-            // fit Voc
-            Voc_f = (lines[5]).substring(lines[5].lastIndexOf('\t') + 1);
-            currFile.add(Double.parseDouble(Voc_f));
+            // Vmp
+            Vmp = (lines[10]).substring(lines[10].lastIndexOf('\t') + 1);
+            currFile.add(Double.parseDouble(Vmp));
 
             // add to final list
             sorted.add(currFile);
@@ -153,7 +161,7 @@ public class PhysicsData extends JVData {
 
                 // get current from line
                 current = (line).substring(line.lastIndexOf('\t') + 1);
-                currFile.add(Double.parseDouble(current));
+                currFile.add(Double.parseDouble(current) * Math.pow(10, 3));    // convert to mA/cm^2
 
             }
 
@@ -172,12 +180,12 @@ public class PhysicsData extends JVData {
 
         // write the table header
         table.add("" + '\t' + "Area [cm^2]" + '\t'
-                            + "Jsc_meas [mA/cm^2]" + '\t'
-                            + "Voc_meas [V]" + '\t'
+                            + "Jsc [mA/cm^2]" + '\t'
+                            + "Voc [mV]" + '\t'
                             + "FF [%]" + '\t'
                             + "Eff [%]" + '\t'
-                            + "Jsc_fit [mA/cm^2]" + '\t'
-                            + "Voc_fit [V]");
+                            + "Jmp [mA/cm^2]" + '\t'
+                            + "Vmp [mV]");
 
         // write the table lines
         ArrayList<Double> p;
