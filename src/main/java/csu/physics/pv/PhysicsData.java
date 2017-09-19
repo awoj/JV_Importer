@@ -1,9 +1,10 @@
 package csu.physics.pv;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-/* Format for params ArrayList<ArrayList<Double>>
+import static java.util.Arrays.copyOfRange;
+
+/* Format for ArrayList<ArrayList<Double>> params
 
 Outer list: each element corresponds to a file
 Inner list: each element corresponds to a parameter, defined by the order:
@@ -15,7 +16,6 @@ Inner list: each element corresponds to a parameter, defined by the order:
     [4] - eff
     [5] - Jsc fit
     [6] - Voc fit
-
 */
 
 
@@ -57,8 +57,8 @@ public class PhysicsData extends JVData {
             }
 
             // Copy the sub-array of parameter and curve data
-            par = Arrays.copyOfRange(lines, 0, index);
-            cur = Arrays.copyOfRange(lines, index, lines.length);
+            par = copyOfRange(lines, 0, index);
+            cur = copyOfRange(lines, index, lines.length);
 
             // Build light parameter data back into a string
             StringBuilder sb;
@@ -97,7 +97,7 @@ public class PhysicsData extends JVData {
                 currFile = new ArrayList<Double>();
 
                 // split into lines
-                lines = (p.get(i)).split(System.getProperty("line.separator"));
+                lines = (p.get(i)).split("\n");
 
                 // area
                 area = (lines[2]).substring(lines[2].lastIndexOf('\t') + 1);
