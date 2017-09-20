@@ -40,6 +40,8 @@ public class JVData implements IData {
         return curves;
     }
 
+    public boolean isValidData() { return false; }
+
     public void extractData() { }
 
     public ArrayList<ArrayList<BigDecimal>> sortParams(ArrayList<String> p) {
@@ -53,4 +55,6 @@ public class JVData implements IData {
     public ArrayList<String> makeParamsTable() {
         return null;
     }
+
+
 }

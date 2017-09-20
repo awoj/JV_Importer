@@ -27,6 +27,22 @@ public class EngrData extends JVData {
     }
 
     @Override
+    public boolean isValidData() {
+
+        boolean isValid = false;
+
+        for (String file : fileData) {
+            if (file.contains("V(V)\tJ(A/cm^2)")) {
+                isValid = true;
+            } else {
+                break;
+            }
+        }
+
+        return isValid;
+    }
+
+    @Override
     public void extractData() {
 
         ArrayList<String> extractedCurves = new ArrayList<>();
@@ -161,7 +177,7 @@ public class EngrData extends JVData {
                 currFile.add(new BigDecimal(voltage));
 
                 // get current from line
-                current = (line).substring(line.lastIndexOf('\t'));
+                current = line.substring(line.lastIndexOf('\t')+1);
                 currFile.add(new BigDecimal(current).multiply(new BigDecimal(1000)));    // convert to mA/cm^2
 
             }

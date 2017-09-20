@@ -229,8 +229,13 @@ public class Window extends JPanel {
                     data = new EngrData(reader.getFileData());
                 }
 
-                if (data == null)
+                if (data == null || !data.isValidData()) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Invalid input, check files and try again",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     return;
+                }
 
                 // pass file names and extract param and curves data
                 data.setFileNames(fileNames);

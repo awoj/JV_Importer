@@ -14,6 +14,8 @@ interface IData {
 
     int getNumFiles();
 
+    boolean isValidData();
+
     void extractData();
 
     ArrayList<ArrayList<BigDecimal>> getCurves();
@@ -23,5 +25,6 @@ interface IData {
     ArrayList<ArrayList<BigDecimal>> sortCurves(ArrayList<String> c);
 
     ArrayList<String> makeParamsTable();
+
 
 }

@@ -27,6 +27,22 @@ public class PhysicsData extends JVData {
     }
 
     @Override
+    public boolean isValidData() {
+
+        boolean isValid = false;
+
+        for (String file : fileData) {
+            if (file.contains("Voltage [V]\tCurrent Density [mA/cm2]")) {
+                isValid = true;
+            } else {
+                break;
+            }
+        }
+
+        return isValid;
+    }
+
+    @Override
     public void extractData() {
 
         ArrayList<String> extractedCurves = new ArrayList<>();
