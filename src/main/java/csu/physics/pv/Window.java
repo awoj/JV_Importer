@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Window extends JPanel {
 
@@ -24,8 +25,11 @@ public class Window extends JPanel {
     private JVReader reader;
     private JVWriter writer;
 
-    // format
+    // input format
     private String dataFormat = "physics";
+    // output format
+    private boolean printCurves = true;
+    private boolean printParams = true;
 
 
     private Window() {
@@ -49,7 +53,7 @@ public class Window extends JPanel {
         // make left panel and add
         leftPanel = new JPanel();
         leftPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        leftPanel.setLayout(new GridLayout(3,0));
+        leftPanel.setLayout(new GridLayout(4,0));
         panel.add(leftPanel);
 
         // make right panel and add
@@ -61,6 +65,7 @@ public class Window extends JPanel {
         // Create the panels and components
         createFilesButtons();
         createFormatSelection();
+        createOutputSelection();
         createGoButton();
         createDirField();
         createScroller();
@@ -73,63 +78,15 @@ public class Window extends JPanel {
         }
 
         // Set window size and center in the screen
-        frame.setSize(new Dimension(500, 350));
+        frame.setSize(new Dimension(550, 450));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.requestFocusInWindow();
     }
 
-    /*
-    Creates radio buttons for the input format (i.e. physics or engineering) and updates the dataFormat appropriately.
-    */
-    private void createFormatSelection() {
 
-        class SelectFormatListener implements ActionListener {
 
-            public void actionPerformed(ActionEvent e) {
 
-                // update dataFormat depending on which radio button was selected
-                if ("physics".equals(e.getActionCommand())) {
-                    dataFormat = "physics";
-                } else if ("engr".equals(e.getActionCommand())) {
-                    dataFormat = "engr";
-                }
-            }
-        }
-
-        // create the buttons
-        JRadioButton physButton = new JRadioButton("Physics");
-        physButton.setBorder(new EmptyBorder(10,10,5,10));
-        physButton.addActionListener(new SelectFormatListener());
-        physButton.setActionCommand("physics");
-        physButton.setFocusPainted(false);
-        physButton.setSelected(true);
-
-        JRadioButton engrButton = new JRadioButton("ERC");
-        engrButton.setBorder(new EmptyBorder(0,10,0,10));
-        engrButton.setActionCommand("engr");
-        engrButton.setFocusPainted(false);
-        engrButton.addActionListener(new SelectFormatListener());
-
-        // group buttons
-        ButtonGroup group = new ButtonGroup();
-        group.add(physButton);
-        group.add(engrButton);
-
-        // make a sub-panel
-        JPanel radioPanel = new JPanel();
-        radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
-
-        // Add title
-        TitledBorder title;
-        title = BorderFactory.createTitledBorder("Format");
-        radioPanel.setBorder(title);
-
-        // add the buttons
-        radioPanel.add(physButton);
-        radioPanel.add(engrButton);
-        leftPanel.add(radioPanel);
-    }
 
     /*
     Creates the "Select Files" and "Clear Files" button with listeners that update the JScrollPane.
@@ -198,7 +155,118 @@ public class Window extends JPanel {
     }
 
     /*
-    Creates the "GO" button that triggers the data reading and writing procedures
+    Creates radio buttons for the input format (i.e. physics or engineering) and updates the dataFormat appropriately.
+    */
+    private void createFormatSelection() {
+
+        class SelectFormatListener implements ActionListener {
+
+            public void actionPerformed(ActionEvent e) {
+
+                // update dataFormat depending on which radio button was selected
+                if ("physics".equals(e.getActionCommand())) {
+                    dataFormat = "physics";
+                } else if ("engr".equals(e.getActionCommand())) {
+                    dataFormat = "engr";
+                }
+            }
+        }
+
+        // create the buttons
+        JRadioButton physButton = new JRadioButton("Physics");
+        physButton.setBorder(new EmptyBorder(10,10,5,10));
+        physButton.addActionListener(new SelectFormatListener());
+        physButton.setActionCommand("physics");
+        physButton.setFocusPainted(false);
+        physButton.setSelected(true);
+
+        JRadioButton engrButton = new JRadioButton("ERC");
+        engrButton.setBorder(new EmptyBorder(0,10,0,10));
+        engrButton.setActionCommand("engr");
+        engrButton.setFocusPainted(false);
+        engrButton.addActionListener(new SelectFormatListener());
+
+        // group buttons
+        ButtonGroup group = new ButtonGroup();
+        group.add(physButton);
+        group.add(engrButton);
+
+        // make a sub-panel
+        JPanel radioPanel = new JPanel();
+        radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
+
+        // Add title
+        TitledBorder title;
+        title = BorderFactory.createTitledBorder("Input Format");
+        radioPanel.setBorder(title);
+
+        // add the buttons
+        radioPanel.add(physButton);
+        radioPanel.add(engrButton);
+        leftPanel.add(radioPanel);
+    }
+
+    /*
+    Creates panel and components which offer file output options.
+     */
+    private void createOutputSelection() {
+
+        final JCheckBox curvesButton = new JCheckBox("Curves");
+        final JCheckBox summaryButton = new JCheckBox("Summary");
+
+        class OutputSelectionListener implements ItemListener {
+
+            public void itemStateChanged(ItemEvent e) {
+
+                // get the ItemSelectable of the event
+                Object source = e.getItemSelectable();
+
+                // if the button was selected, toggle the print token to true
+                if (source == curvesButton) {
+                    printCurves = true;
+                } else if (source == summaryButton) {
+                    printParams = true;
+                }
+
+                // if the button was deselected, toggle the print token to false
+                if (e.getStateChange() == ItemEvent.DESELECTED) {
+
+                    if (source == curvesButton) {
+                        printCurves = false;
+                    } else if (source == summaryButton) {
+                        printParams = false;
+                    }
+                }
+
+            }
+
+        }
+
+        // Add the buttons, on by default
+        curvesButton.setSelected(true);
+        curvesButton.addItemListener(new OutputSelectionListener());
+
+        summaryButton.setSelected(true);
+        summaryButton.addItemListener(new OutputSelectionListener());
+
+        // make a sub-panel
+        JPanel outputPanel = new JPanel();
+        outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+
+        // Add title
+        TitledBorder title;
+        title = BorderFactory.createTitledBorder("Output Options");
+        outputPanel.setBorder(title);
+
+        // add the buttons
+        outputPanel.add(curvesButton);
+        outputPanel.add(summaryButton);
+        leftPanel.add(outputPanel);
+
+    }
+
+    /*
+    Creates the "Go" button that triggers the data reading and writing procedures
      */
     private void createGoButton() {
 
@@ -241,8 +309,14 @@ public class Window extends JPanel {
                 data.setFileNames(fileNames);
                 data.extractData();
 
-                // write out
+                // setup the writer
                 writer = new JVWriter(data);
+                // set the print options
+                ArrayList<Boolean> printOptions = new ArrayList<>();
+                printOptions.add(printCurves);
+                printOptions.add(printParams);
+                writer.setPrintOptions(printOptions);
+                // do it
                 boolean success = writer.write();
 
                 // display dialog reporting results
@@ -302,17 +376,6 @@ public class Window extends JPanel {
 
     }
 
-    private void createScroller() {
-
-        // Add the scroller to files panel
-        JList fileList = new JList();
-        fileList.setLayoutOrientation(JList.VERTICAL);
-        listScroller = new JScrollPane(fileList,
-                                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        rightPanel.add(listScroller, BorderLayout.CENTER);
-    }
-
     /*
     Updates fileNames, used after the JScrollPane has been updated with new file names.
      */
@@ -320,6 +383,17 @@ public class Window extends JPanel {
         fileNames = new String[filePaths.length];
         for (int i = 0; i < filePaths.length; i++)
             fileNames[i] = filePaths[i].getName();
+    }
+
+    private void createScroller() {
+
+        // Add the scroller to files panel
+        JList fileList = new JList();
+        fileList.setLayoutOrientation(JList.VERTICAL);
+        listScroller = new JScrollPane(fileList,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        rightPanel.add(listScroller, BorderLayout.CENTER);
     }
 
     private void updateScroller() {
