@@ -19,13 +19,26 @@ Inner list: each element corresponds to a parameter, defined by the order:
     [6] - Voc fit
 */
 
-
+/**
+ * Extension of {@link JVData} for the J-V data output created by the CSU physics lightbox in Jim Sites' PV lab.
+ */
 public class PhysicsData extends JVData {
 
+    /**
+     * Constructor
+     *
+     * @param data  A list of strings where each string contains the contents of one J-V file.
+     */
     PhysicsData(ArrayList<String> data) {
+
         fileData = data;
     }
 
+    /**
+     * See {@link JVData#isValidData()} for more information.
+     *
+     * @return  Boolean indicating if the input is valid.
+     */
     @Override
     public boolean isValidData() {
 
@@ -42,6 +55,9 @@ public class PhysicsData extends JVData {
         return isValid;
     }
 
+    /**
+     * See {@link JVData#extractData()} for more information.
+     */
     @Override
     public void extractData() {
 
@@ -96,6 +112,19 @@ public class PhysicsData extends JVData {
 
     }
 
+    /**
+     * See {@link JVData#sortParams(ArrayList)} for more information. <br>
+     *
+     * Structure of the parameter array for physics data: <br>
+     *
+     * [0] - cell area (cm^2) <br>
+     * [1] - Jsc measured (mA/cm^2)<br>
+     * [2] - Voc measured (V) <br>
+     * [3] - FF (%) <br>
+     * [4] - Efficiency (%) <br>
+     * [5] - Jsc fit (mA/cm^2) <br>
+     * [6] - Voc fit (mA/cm^2)
+     */
     @Override
     public ArrayList<ArrayList<BigDecimal>> sortParams(ArrayList<String> p) {
 
@@ -147,6 +176,9 @@ public class PhysicsData extends JVData {
         return sorted;
     }
 
+    /**
+     * See {@link JVData#sortCurves(ArrayList)} for more information.
+     */
     @Override
     public ArrayList<ArrayList<BigDecimal>> sortCurves(ArrayList<String> c) {
 
@@ -182,6 +214,9 @@ public class PhysicsData extends JVData {
         return sorted;
     }
 
+    /**
+     * See {@link JVData#makeParamsTable()} for more information.
+     */
     @Override
     public ArrayList<String> makeParamsTable() {
 

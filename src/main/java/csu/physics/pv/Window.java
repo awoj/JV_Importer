@@ -32,6 +32,9 @@ public class Window extends JPanel {
     private boolean printParams = true;
 
 
+    /**
+     * Constructor sets up the main window with a left and right panel, adding Component to each.
+     */
     private Window() {
 
         // Initialize the window and set layout
@@ -84,12 +87,8 @@ public class Window extends JPanel {
         frame.requestFocusInWindow();
     }
 
-
-
-
-
-    /*
-    Creates the "Select Files" and "Clear Files" button with listeners that update the JScrollPane.
+    /**
+     * Creates the "Select Files" and "Clear Files" buttons and updates the directory and file list in the UI.
      */
     private void createFilesButtons() {
 
@@ -154,9 +153,10 @@ public class Window extends JPanel {
         leftPanel.add(filesPanel);
     }
 
-    /*
-    Creates radio buttons for the input format (i.e. physics or engineering) and updates the dataFormat appropriately.
-    */
+    /**
+     * Creates radio buttons for the input format (physics, engineering, etc.) and updates the dataFormat flag
+     * appropriately.
+     */
     private void createFormatSelection() {
 
         class SelectFormatListener implements ActionListener {
@@ -206,8 +206,8 @@ public class Window extends JPanel {
         leftPanel.add(radioPanel);
     }
 
-    /*
-    Creates panel and components which offer file output options.
+    /**
+     * Sets the print options to be used by {@link JVWriter}.
      */
     private void createOutputSelection() {
 
@@ -265,8 +265,8 @@ public class Window extends JPanel {
 
     }
 
-    /*
-    Creates the "Go" button that triggers the data reading and writing procedures
+    /**
+     * Creates the Component that triggers the data reading and writing procedures when pressed.
      */
     private void createGoButton() {
 
@@ -355,6 +355,9 @@ public class Window extends JPanel {
         leftPanel.add(goPanel);
     }
 
+    /**
+     * Creates the Component that displays the current directory of selected files.
+     */
     private void createDirField() {
 
         dirField = new JTextField(20);
@@ -363,6 +366,9 @@ public class Window extends JPanel {
 
     }
 
+    /**
+     * Updates what's displayed in the directory field if the filepath has changed.
+     */
     private void updateDirField() {
 
         rightPanel.remove(dirField);
@@ -376,8 +382,8 @@ public class Window extends JPanel {
 
     }
 
-    /*
-    Updates fileNames, used after the JScrollPane has been updated with new file names.
+    /**
+     * Updates the list of file names, used after the JScrollPane has been updated with new files.
      */
     private void updateFileNames() {
         fileNames = new String[filePaths.length];
@@ -385,6 +391,9 @@ public class Window extends JPanel {
             fileNames[i] = filePaths[i].getName();
     }
 
+    /**
+     * Creates the Component which displays the list of current files.
+     */
     private void createScroller() {
 
         // Add the scroller to files panel
@@ -396,6 +405,9 @@ public class Window extends JPanel {
         rightPanel.add(listScroller, BorderLayout.CENTER);
     }
 
+    /**
+     * Updates the contents of the file scroller if the list of file has been updated.
+     */
     private void updateScroller() {
         rightPanel.remove(listScroller);
 

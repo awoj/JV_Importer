@@ -8,18 +8,43 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+/**
+ *  Takes an input {@link JVData} object and converts its contents into a string that is written to file.
+ */
 class JVWriter {
 
     private JVData data;
     private ArrayList<Boolean> printOptions;
 
-    // constructor
+    /**
+     * Constructor.
+     *
+     * @param input {@link JVData} object to use.
+     */
     JVWriter(JVData input) {
         data = input;
     }
 
-    /*
-    Writes sorted data to file by prompting for save location. Returns a boolean to indicate if it wrote successfully.
+    /**
+     * Sets the print options as an array of booleans. More print options can be added in the future. The current
+     * structure of the array is:
+     *
+     * [0] - print curves?
+     * [1] - print parameters?
+     *
+     * @param options   The list of boolean flags to set the file printing options.
+     */
+    void setPrintOptions(ArrayList<Boolean> options) {
+
+        printOptions = options;
+
+    }
+
+    /**
+     * Writes sorted data to file according to the print options set. Prompts the user for a save location, and returns
+     * a boolean indicating if the write process was successful.
+     *
+     * @return  Boolean indicating if the write was successful.
      */
     boolean write() {
 
@@ -102,12 +127,6 @@ class JVWriter {
 
         // return the results
         return writeSuccess;
-
-    }
-
-    void setPrintOptions(ArrayList<Boolean> options) {
-
-        printOptions = options;
 
     }
 }
