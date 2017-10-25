@@ -26,6 +26,11 @@ public class EngrData extends JVData {
         fileData = data;
     }
 
+    /**
+     * Verifies the data is of the correct format.
+     *
+     * @return  Boolean indicating if the data is a valid format.
+     */
     @Override
     public boolean isValidData() {
 
@@ -35,6 +40,7 @@ public class EngrData extends JVData {
             if (file.contains("V(V)\tJ(A/cm^2)")) {
                 isValid = true;
             } else {
+                isValid = false;
                 break;
             }
         }
@@ -42,6 +48,9 @@ public class EngrData extends JVData {
         return isValid;
     }
 
+    /**
+     *
+     */
     @Override
     public void extractData() {
 

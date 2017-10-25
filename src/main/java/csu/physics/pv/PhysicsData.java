@@ -48,6 +48,7 @@ public class PhysicsData extends JVData {
             if (file.contains("Voltage [V]\tCurrent Density [mA/cm2]")) {
                 isValid = true;
             } else {
+                isValid = false;
                 break;
             }
         }
